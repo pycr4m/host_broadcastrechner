@@ -1,8 +1,8 @@
 def main():
-    cider_wert, string_ip_liste, ip_liste = ip_eingeben()
-    hostanteilrechner(cider_wert, string_ip_liste)
+    cidr_wert, string_ip_liste, ip_liste = ip_eingeben()
+    hostanteilrechner(cidr_wert, string_ip_liste)
     liste_binaer, string_liste_binaer = ip_in_binaer(ip_liste)
-    liste_broadcast_binaer = broadcast_ermitteln(liste_binaer, cider_wert)
+    liste_broadcast_binaer = broadcast_ermitteln(liste_binaer, cidr_wert)
     broadcast_in_dezimal(liste_broadcast_binaer)
 
 def ip_eingeben():
@@ -32,16 +32,16 @@ def ip_eingeben():
     for element in ip_liste:
         string_ip_liste += element
 
-    cider_range = []
+    cidr_range = []
     for i in range(32):
-        cider_range.append(i)
+        cidr_range.append(i)
         i += 1
 
     while True:
         try:
-            cider_wert = input(f"Gib den Cider für {string_ip_liste} ein: ")
-            if int(cider_wert) in cider_range:
-                ip_liste.append(cider_wert)
+            cidr_wert = input(f"Gib den cidr für {string_ip_liste} ein: ")
+            if int(cidr_wert) in cidr_range:
+                ip_liste.append(cidr_wert)
                 break
             else:
                 print("Gibt einen Wert zwischen 1 und 31 ein!")
@@ -52,16 +52,16 @@ def ip_eingeben():
     for element in ip_liste:
         string_ip_liste += element
     print(f"Rückgabe ip_eingeben string_ip_liste: \033[1;1;33m{string_ip_liste}\033[0m")
-    return cider_wert, string_ip_liste, ip_liste
+    return cidr_wert, string_ip_liste, ip_liste
 
-def hostanteilrechner(cider_wert, string_ip_liste):
-    hostanteil = 32 - int(cider_wert)
+def hostanteilrechner(cidr_wert, string_ip_liste):
+    hostanteil = 32 - int(cidr_wert)
     hostadressen = 1
     for exponent in range(0,hostanteil):
         hostadressen = 2* hostadressen
     hostadressen = hostadressen -2
     print()
-    print(f"Rückgabe hostanteilrechner: Für {string_ip_liste} mit {cider_wert}er-Cider gibt es \033[1;1;33m{hostadressen:,} Hostadressen\033[0m.".replace(",", "."))
+    print(f"Rückgabe hostanteilrechner: Für {string_ip_liste} mit {cidr_wert}er-cidr gibt es \033[1;1;33m{hostadressen:,} Hostadressen\033[0m.".replace(",", "."))
     return hostadressen
 
 def ip_in_binaer(ip_liste):
@@ -71,37 +71,37 @@ def ip_in_binaer(ip_liste):
     viertes_oktett = ip_liste[6]
 
     ip_int_list = [erstes_oktett] + [zweites_oktett] + [drittes_oktett] + [viertes_oktett]
-    anhänger = [0, 0, 0, 0, 0, 0, 0, 0]
+    anhaenger = [0, 0, 0, 0, 0, 0, 0, 0]
     liste_binaer = []
     
     for oktett in ip_int_list:
         oktett = int(oktett)
         if oktett >= 128:
-            anhänger[0] = 1
+            anhaenger[0] = 1
             oktett = oktett -128
         if oktett >= 64:
-            anhänger[1] = 1
+            anhaenger[1] = 1
             oktett = oktett -64
         if oktett >= 32:
-            anhänger[2] = 1
+            anhaenger[2] = 1
             oktett = oktett -32
         if oktett >= 16:
-            anhänger[3] = 1
+            anhaenger[3] = 1
             oktett = oktett -16
         if oktett >= 8:
-            anhänger[4] = 1
+            anhaenger[4] = 1
             oktett = oktett -8
         if oktett >= 4:
-            anhänger[5] = 1
+            anhaenger[5] = 1
             oktett = oktett -4
         if oktett >= 2:
-            anhänger[6] = 1
+            anhaenger[6] = 1
             oktett = oktett -2
         if oktett >= 1:
-            anhänger[7] = 1
+            anhaenger[7] = 1
             oktett = oktett -1
-        liste_binaer = liste_binaer + anhänger
-        anhänger = [0, 0, 0, 0, 0, 0, 0, 0]
+        liste_binaer = liste_binaer + anhaenger
+        anhaenger = [0, 0, 0, 0, 0, 0, 0, 0]
 
     string_liste_binaer = ""
     for i in liste_binaer:
@@ -111,8 +111,8 @@ def ip_in_binaer(ip_liste):
     print(f"Rückgabe ip_in_binaer liste_binaer: {liste_binaer}")
     return liste_binaer, string_liste_binaer
 
-def broadcast_ermitteln(liste_binaer, cider_wert):
-    hostanteil = (len(liste_binaer) - int(cider_wert))
+def broadcast_ermitteln(liste_binaer, cidr_wert):
+    hostanteil = (len(liste_binaer) - int(cidr_wert))
     
     for host_bit in range(hostanteil):
         liste_binaer[32 -hostanteil + host_bit] = 1
